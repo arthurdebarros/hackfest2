@@ -18,20 +18,21 @@
 <div class="container">
 	<div class="col-sm-7" style="padding: 10px 40px 40px 40px;">
 		<div class="row">
-			<h1 class="col-sm-11" style="font-size: 30px; margin-top:0px;margin-bottom:20px">
+			<h1 class="col-sm-11" style="font-size: 25px; margin-top:0px;margin-bottom:20px">
 				<b>Temas</b>
 			</h1>
 		</div>
-		<div id="principal-temas" style="height:184px !important;max-height:184px;overflow:auto" class="list-group">
+		<div id="principal-temas" style="height:210px !important;max-height:210px;overflow:auto" class="list-group">
 		  @for(tema <- Tema.values()){
 		  	<a href="#" class="list-group-item" data-id="@tema.getTipo()">@tema</a>
 		  }
 		</div>
 	</div>
 	<div class="col-sm-3 div-btn-big-container">
-		<a href="#" class="btn btn-lg btn-success"
+		<button href="#" class="btn btn-lg col-sm-12" style="margin-top:46px"
 			data-toggle="modal"
-			data-target="#criacaoModal">Crie um evento</a>
-		<br><button class="btn btn-success col-sm-12" style="margin-top:20px" onclick="mySwiper.swipeTo(1);"><i class="fa fa-eye"></i>&nbsp;&nbsp;Veja todos eventos</button>
+			data-target="#criacaoModal"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Crie um evento</button>
+		<br><br>
+		<br><button class="btn btn-success col-sm-12" style="margin-top:2px" onclick="mySwiper.swipeTo(1);"><i class="fa fa-eye"></i>&nbsp;&nbsp;Veja todos eventos</button>
 	</div>
 </div>
