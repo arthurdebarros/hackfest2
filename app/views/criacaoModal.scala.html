@@ -1,9 +1,9 @@
-<div class="modal fade" id="basicModal" tabindex="-1"  role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+<div class="modal fade" id="criacaoModal" tabindex="-1"  role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">	
-				<h4 style="background-color:white;color:black; font-size: 30px; margin-top:0px;" class="modal-title" id="myModalLabel">Criar um evento</h4>
+				<h4 style="background-color:white;color:black; font-size: 30px; margin-top:0px;" class="modal-title" id="myModalLabel"><b>Criar um evento</b></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -14,7 +14,7 @@
 								<div class="row">
 									<div class="col-md-4">
 										<h1 style="font-size: 30px; margin-top:0px;">
-											<b>Temas</b>
+											Selecione o(s) Tema(s)
 										</h1>
 										<div id='criacao-temas' style="height:100% !important;padding-top:30px;max-height:390px;overflow-x:auto;overflow-y:scroll; " class="list-group">
 											 @for(tema <- Tema.values()){
