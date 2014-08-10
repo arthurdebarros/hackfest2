@@ -1,6 +1,4 @@
 package controllers;
-
-
 import models.dao.GenericDAO;
 import models.dao.GenericDAOImpl;
 
@@ -15,6 +13,9 @@ public class Application extends Controller {
 
 	@Transactional
     public static Result index(){
+		if (session().get("user") == null) {
+			return redirect(routes.Login.show());
+		}
         return ok(index.render());
     }
 
