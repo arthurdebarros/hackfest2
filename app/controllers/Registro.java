@@ -20,10 +20,15 @@ public class Registro extends Controller {
         return ok(registro.render(registroForm));
     }
     
+	
 	@Transactional
 	public static Result registrar() {
-		
 		Usuario u = registroForm.bindFromRequest().get();
+		return registrar(u);
+	}
+	
+	@Transactional
+	public static Result registrar(Usuario u) {	
     	
 		if (registroForm.hasErrors() || validate(u.getEmail())) {
 			flash("fail", "Email já está em uso");
@@ -37,7 +42,8 @@ public class Registro extends Controller {
     }
 	
 	private static boolean validate(String email) {
-		if(dao.findByAttributeName("Usuario", "email", email).size() !=0){
+		
+		if(dao.findByAttributeName("Usuario", "email", email).size() != 0){
 			return true;
 		}
 		return false;
