@@ -14,10 +14,10 @@ public class UsuarioTest extends AbstractTest{
 	
 	@Test
 	public void deveSalvarUsuarioNoBD() {
-		Usuario user1 = new Usuario("Admin","admin@gmail.com","1234");
+		Usuario user1 = new Usuario("admin@gmail.com","1234","Admin");
 		dao.persist(user1);
 		assertThat(dao.findAllByClassName("Usuario").size()).isEqualTo(1);
-		Usuario user2 = new Usuario("Trillian","t_mcmilliam@siriusmail.com","123456");
+		Usuario user2 = new Usuario("t_mcmilliam@siriusmail.com","123456","Trillian");
 		dao.persist(user2);
 		assertThat(dao.findAllByClassName("Usuario").size()).isEqualTo(2);
 		

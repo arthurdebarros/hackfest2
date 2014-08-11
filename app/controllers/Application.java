@@ -13,7 +13,7 @@ public class Application extends Controller {
 
 	@Transactional
     public static Result index(){
-		if (session().get("user") == null) {
+		if (session().get("username") == null) {
 			return redirect(routes.Login.show());
 		}
         return ok(index.render());

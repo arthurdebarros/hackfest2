@@ -46,12 +46,13 @@ public class RegistroTest extends AbstractTest{
 	
 	@Test
 	public void testeDeCadastrarUsuario() {
-		Controller.session().clear();
 		String email="president@siriusmail.com";
-		Usuario novouser = new Usuario(email, "123456", "Zaphod Beeblebrox");
+		Usuario novouser = new Usuario(email ,"123456","Zaphod Beeblebrox");
+		result = callAction(controllers.routes.ref.Registro.show(),
+				fakeRequest());
 		Registro.registrar(novouser);
 		assertTrue(dao.findByAttributeName("Usuario", "email", email).size() == 1);
-		//assertEquals("president@siriusmail.com", dao.findByAttributeName("Usuario", "email", "president@siriusmail.com").get(0));
+		assertEquals("president@siriusmail.com", dao.findByEntityId(Usuario.class, novouser.getId()).getEmail());
 					
 				
 		

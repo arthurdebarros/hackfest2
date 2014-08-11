@@ -10,6 +10,8 @@ import models.Evento;
 import models.EventoComparator;
 import models.Participante;
 import models.Tema;
+import models.Usuario;
+import models.dao.GenericDAOImpl;
 import models.exceptions.EventoInvalidoException;
 import models.exceptions.PessoaInvalidaException;
 import play.data.Form;
@@ -67,20 +69,23 @@ public class EventoController extends Controller {
 	}
 	
 	@Transactional
-	public static Result participar(long id) throws PessoaInvalidaException, EventoInvalidoException{
-		Form<Participante> participanteFormRequest = participanteForm.bindFromRequest();
+	public static Result participar(long idEvento) throws PessoaInvalidaException, EventoInvalidoException{
+		//deprecated... 
+		//Form<Participante> participanteFormRequest = participanteForm.bindFromRequest();
 		
-		if (participanteForm.hasErrors()) {
-			return badRequest();
-		} else {
-			Evento evento = Application.getDao().findByEntityId(Evento.class, id);
-			Participante novoParticipante = participanteFormRequest.get();
-			novoParticipante.setEvento(evento);
+		//if (participanteForm.hasErrors()) {
+		//	return badRequest();
+		//} else {
+				Long idDoUserAtual = Long.valueOf(session().get("userid")).longValue();
+				Usuario usuarioAtualmenteLogado = Application.getDao().findByEntityId(Usuario.class, idDoUserAtual);
+				Evento evento = Application.getDao().findByEntityId(Evento.class, idEvento);
+				
+				Participante novoParticipante = new Participante(usuarioAtualmenteLogado,evento);	
+				
+				Application.getDao().persist(novoParticipante);
+				Application.getDao().merge(novoParticipante);
+				Application.getDao().flush();
+				return redirect(controllers.routes.Application.index());
 			
-			Application.getDao().persist(novoParticipante);
-			Application.getDao().merge(novoParticipante);
-			Application.getDao().flush();
-			return redirect(controllers.routes.Application.index());
-		}
 	}
 }

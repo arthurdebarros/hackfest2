@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import models.exceptions.PessoaInvalidaException;
+
+import org.hibernate.validator.constraints.Email;
+
 @Entity(name="Usuario")
 public class Usuario {
 
@@ -13,8 +17,11 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
+	@Email
 	private String email;
+	
 	private String pass;
+	
 	private String nome;
 	
 	public Usuario() {
@@ -26,6 +33,10 @@ public class Usuario {
 		this.pass = pass;
 	}
 
+	public Long getId(){
+		return id;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -49,4 +60,5 @@ public class Usuario {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 }

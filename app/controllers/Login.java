@@ -52,7 +52,8 @@ public class Login extends Controller {
         	Usuario user = (Usuario) dao.findByAttributeName(
         			"Usuario", "email", u.getEmail()).get(0);
             session().clear();
-            session("user", user.getNome());
+            session("username", user.getNome());
+            session("userid",user.getId().toString());
             return redirect(
                 routes.Application.index()
             );

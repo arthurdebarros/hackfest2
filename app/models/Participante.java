@@ -43,6 +43,12 @@ public class Participante {
 		setEmail(email);
 		setEvento(evento);
 	}
+	
+	public Participante(Usuario user, Evento evento) throws PessoaInvalidaException {
+		setNome(user.getNome());
+		setEmail(user.getEmail());
+		setEvento(evento);
+	}
 
 	public String getNome() {
 		return nome;
