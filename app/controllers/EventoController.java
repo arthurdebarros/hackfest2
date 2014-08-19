@@ -8,23 +8,29 @@ import java.util.List;
 
 import models.Evento;
 import models.EventoComparator;
-import models.Participante;
+import models.Local;
+import models.Participacao;
 import models.Tema;
 import models.Usuario;
 import models.dao.GenericDAOImpl;
 import models.exceptions.EventoInvalidoException;
+import models.exceptions.LocalInvalidoException;
 import models.exceptions.PessoaInvalidaException;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import controllers.Login;
 
 public class EventoController extends Controller {
 
 	private final static Form<Evento> EVENTO_FORM = form(Evento.class);
-	private final static Form<Participante> participanteForm = form(Participante.class);
+	private final static Form<Participacao> participanteForm = form(Participacao.class);
+	private final static Form<Local> LOCAL_FORM = form(Local.class);
 
 	@Transactional
 	public static Result eventosPorTema(int id) throws PessoaInvalidaException, EventoInvalidoException{
@@ -46,7 +52,7 @@ public class EventoController extends Controller {
 		
 		try {
 			json = mapper.writeValueAsString(eventosRequeridos);
-		} catch (Exception _) {
+		} catch (Exception e) {
 			return badRequest();
 		}
 		
@@ -80,7 +86,7 @@ public class EventoController extends Controller {
 				Usuario usuarioAtualmenteLogado = Application.getDao().findByEntityId(Usuario.class, idDoUserAtual);
 				Evento evento = Application.getDao().findByEntityId(Evento.class, idEvento);
 				
-				Participante novoParticipante = new Participante(usuarioAtualmenteLogado,evento);	
+				Participacao novoParticipante = new Participacao(usuarioAtualmenteLogado,evento);	
 				
 				Application.getDao().persist(novoParticipante);
 				Application.getDao().merge(novoParticipante);
@@ -88,4 +94,27 @@ public class EventoController extends Controller {
 				return redirect(controllers.routes.Application.index());
 			
 	}
+	
+	@Transactional
+	public static Result cadastrarLocal() throws LocalInvalidoException {
+
+		Form<Local> localFormRequest = LOCAL_FORM.bindFromRequest();
+		
+		if (LOCAL_FORM.hasErrors()) {
+			return badRequest();
+		} else {
+			Local novoLocal = localFormRequest.get();
+			Application.getDao().persist(novoLocal);
+			Application.getDao().merge(novoLocal);
+			Application.getDao().flush();
+			return redirect(controllers.routes.Application.index());
+		}
+		
+	}
+	
+	@Transactional
+	public static List<Local> getLocais() {
+		return Application.getDao().findAllByClassName("Local");
+	}
+
 }

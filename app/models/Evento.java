@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import models.exceptions.EventoInvalidoException;
+import models.exceptions.LocalInvalidoException;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 
@@ -39,9 +40,11 @@ public class Evento {
 	@Temporal(value = TemporalType.DATE)
 	@Required
 	private Date data;
+	
+	private Local localDoEvento;
 
 	@OneToMany(mappedBy = "evento")
-	private List<Participante> participantes = new ArrayList<Participante>();
+	private List<Participacao> participacoes = new ArrayList<Participacao>();
 
 	@ElementCollection
 	@Enumerated(value = EnumType.ORDINAL)
@@ -51,13 +54,16 @@ public class Evento {
 	public Evento() {
 	}
 
-	public Evento(String titulo, String descricao, Date data, List<Tema> temas)
+	public Evento(String titulo, String descricao, Date data, Local lugar, List<Tema> temas)
 			throws EventoInvalidoException {
 		setTitulo(titulo);
 		setDescricao(descricao);
 		setData(data);
+		setLocalDoEvento(lugar);
 		setTemas(temas);
 	}
+
+	
 
 	public String getTitulo() {
 		return titulo;
@@ -76,7 +82,7 @@ public class Evento {
 	}
 
 	public Integer getTotalDeParticipantes() {
-		return participantes.size();
+		return participacoes.size();
 	}
 
 	public List<Tema> getTemas() {
@@ -84,34 +90,57 @@ public class Evento {
 	}
 
 	public void setTitulo(String titulo) throws EventoInvalidoException {
-		if (titulo == null)
+		if (titulo == null){
 			throw new EventoInvalidoException("Parametro nulo");
-		if (titulo.length() > 40)
+		}
+		if (titulo.length() > 40){
 			throw new EventoInvalidoException("Título longo");
-		this.titulo = titulo;
+		}else{
+			this.titulo = titulo;
+		}
 	}
 
 	public void setDescricao(String descricao) throws EventoInvalidoException {
-		if (descricao == null)
+		if (descricao == null){
 			throw new EventoInvalidoException("Parametro nulo");
-		if (descricao.length() > 450)
+		}
+		if (descricao.length() > 450){
 			throw new EventoInvalidoException("Descrição longa");
-		this.descricao = descricao;
+		}else{
+			this.descricao = descricao;
+			}
 	}
 
 	public void setData(Date data) throws EventoInvalidoException {
-		if (data == null)
+		if (data == null){
 			throw new EventoInvalidoException("Parametro nulo");
-		if (data.compareTo(new Date()) < 0)
+		}
+		if (data.compareTo(new Date()) < 0){
 			throw new EventoInvalidoException("Data inválida");
-		this.data = data;
+		}else{
+				this.data = data;
+			}
 	}
 
-	public void setTemas(List<Tema> temas) throws EventoInvalidoException {
-		if (temas == null)
+	private void setLocalDoEvento(Local lugar) throws EventoInvalidoException {
+		if (lugar == null){
 			throw new EventoInvalidoException("Parametro nulo");
-		if (temas.size() == 0)
+		}
+		if (lugar.getReferencias().length() == 0){
+			throw new EventoInvalidoException("Referencia Do Local vazio");
+		}else{
+			this.localDoEvento = lugar;
+		}
+	}
+		
+	public void setTemas(List<Tema> temas) throws EventoInvalidoException {
+		if (temas == null){
+			throw new EventoInvalidoException("Parametro nulo");
+		}
+		if (temas.size() == 0){
 			throw new EventoInvalidoException("Nenhum tema");
-		this.temas = temas;
+		}else{
+			this.temas = temas;
+		}
 	}
 }

@@ -7,8 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import models.Evento;
+import models.Local;
 import models.Tema;
 import models.exceptions.EventoInvalidoException;
+import models.exceptions.LocalInvalidoException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,18 +18,28 @@ import org.junit.Test;
 public class EventoTest {
 	
 	private List<Tema> temas;
-	
+	Local lugar;
 	@Before
 	public void setUp(){
 		temas = new ArrayList<Tema>();
+	
+	}
+	@Test
+	public void deveCriarUmLocal() {
+
+		try {
+			lugar = new Local("Centro de Convenções", "Abaixo do  hotel garden...", 40);
+		} catch (LocalInvalidoException e) {
+			fail();
+		}
 	}
 	
 	@Test
 	public void deveCriarUmEvento() {
 		temas.add(Tema.ARDUINO);
 		try {
-			new Evento("Python na cabeça", "Vamos programar em Python!", new Date(), temas);
-		} catch (EventoInvalidoException _) {
+			new Evento("Python na cabeça", "Vamos programar em Python!", new Date(), lugar, temas);
+		} catch (EventoInvalidoException e) {
 			fail();
 		}
 	}
@@ -36,35 +48,41 @@ public class EventoTest {
 	public void deveDarException() {
 		try {
 			new Evento(null,
-					"Vamos programar em Python!", new Date(), temas);
+					"Vamos programar em Python!", new Date(), lugar, temas);
+			fail();
+		} catch (EventoInvalidoException e) {
+			assertEquals("Parametro nulo", e.getMessage());
+		}
+		try {
+			new Evento("Python na cabeça", null, new Date(), lugar, temas);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Parametro nulo", e.getMessage());
 		}
 		try {
 			new Evento("Python na cabeça",
-					null, new Date(), temas);
+					"Vamos programar em Python!", null, lugar, temas);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Parametro nulo", e.getMessage());
 		}
 		try {
 			new Evento("Python na cabeça",
-					"Vamos programar em Python!", null, temas);
+					"Vamos programar em Python!", new Date(), null, temas);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Parametro nulo", e.getMessage());
 		}
 		try {
 			new Evento("Python na cabeça",
-					"Vamos programar em Python!", new Date(), null);
+					"Vamos programar em Python!", new Date(), lugar,  null);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Parametro nulo", e.getMessage());
 		}
 		try {
 			new Evento("Python na cabeça",
-					"Vamos programar em Python!", new Date(), new ArrayList<Tema>());
+					"Vamos programar em Python!", new Date(), lugar, new ArrayList<Tema>());
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Nenhum tema", e.getMessage());
@@ -77,14 +95,14 @@ public class EventoTest {
 			}
 			
 			new Evento("Python na cabeça",
-					descricaoLonga, new Date(), temas);
+					descricaoLonga, new Date(), lugar, temas);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Descrição longa", e.getMessage());
 		}
 		try {
 			new Evento("Python na cabeça na mente e no coração uhuuu",
-					"Vamos programar em Python!", new Date(), null);
+					"Vamos programar em Python!", new Date(), lugar, null);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Título longo", e.getMessage());
@@ -94,7 +112,7 @@ public class EventoTest {
 			calendar.add(Calendar.DAY_OF_WEEK, -1);
 
 			new Evento("Python na cabeça",
-					"Vamos programar em Python!", calendar.getTime(), temas);
+					"Vamos programar em Python!", calendar.getTime(), lugar, temas);
 			fail();
 		} catch (EventoInvalidoException e) {
 			assertEquals("Data inválida", e.getMessage());

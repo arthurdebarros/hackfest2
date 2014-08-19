@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Email;
 import play.data.validation.Constraints.MaxLength;
 
 @Entity
-public class Participante {
+public class Participacao {
 
 	private final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -34,17 +34,17 @@ public class Participante {
 	@ManyToOne
 	private Evento evento;
 
-	public Participante() {
+	public Participacao() {
 	}
 
-	public Participante(String nome, String email, Evento evento)
+	public Participacao(String nome, String email, Evento evento)
 			throws PessoaInvalidaException {
 		setNome(nome);
 		setEmail(email);
 		setEvento(evento);
 	}
 	
-	public Participante(Usuario user, Evento evento) throws PessoaInvalidaException {
+	public Participacao(Usuario user, Evento evento) throws PessoaInvalidaException {
 		setNome(user.getNome());
 		setEmail(user.getEmail());
 		setEvento(evento);
