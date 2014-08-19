@@ -1,11 +1,19 @@
 package models;
 
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.NumberFormat;
 
 import models.exceptions.LocalInvalidoException;
 import play.data.validation.Constraints.MaxLength;
@@ -15,20 +23,24 @@ import play.data.validation.Constraints.Required;
 @Entity
 public class Local {
 
+	
 	@Id
 	@GeneratedValue
 	private long id;
-	
+
 	@Required
 	@MaxLength(value = 120)
 	private String nome;
-	
-	@Required
-	private Integer capacidade;
-	
+
 	@Required
 	@MaxLength(value = 450)
+	@Column(name = "CONTENT", length = 450)
 	private String referencias;
+
+	@NumberFormat
+	@Required
+	private Integer capacidade;
+
 
 	public Local(String nome, String referencias, Integer capacidade) throws LocalInvalidoException {
 		super();

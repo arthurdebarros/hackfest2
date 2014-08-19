@@ -48,7 +48,7 @@
 							}
 						</div> 
 					</div>
-					<div class=" form-group row">
+					<div class="row">
 						<div class="col-md-8">
 							<select name="locale" class="form-control">
 								@for(local <- controllers.EventoController.getLocais()){
@@ -58,7 +58,7 @@
 						</div>
 												
 						<div class="col-md-4">
-							<a data-toggle="modal" data-target="#modalCadastroDeLocal" class="btn btn-primary">Cadastrar Novo Local</a>
+							<a href="@routes.EventoController.getCadastradorDeLocal()" class="btn btn-primary">Cadastrar um local novo para eventos</a>
 						</div>
 					</div>
 				</div>

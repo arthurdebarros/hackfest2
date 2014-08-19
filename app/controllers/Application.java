@@ -1,7 +1,10 @@
 package controllers;
+import java.util.List;
+
+
+import models.Usuario;
 import models.dao.GenericDAO;
 import models.dao.GenericDAOImpl;
-
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -22,6 +25,7 @@ public class Application extends Controller {
 	public static GenericDAO getDao(){
 		return dao;
 	}
+
 
 
 

@@ -21,6 +21,8 @@ import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.login;
+import views.html.modalCriacaoDeEvento;
+import views.html.modalCadastroDeLocal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -96,20 +98,49 @@ public class EventoController extends Controller {
 	}
 	
 	@Transactional
-	public static Result cadastrarLocal() throws LocalInvalidoException {
+	public static Result getCadastradorDeLocal() {
+		
+		return ok(modalCadastroDeLocal.render(LOCAL_FORM));
+	}
+
+	
+//	@Transactional
+//	public static Result cadastrarLocal() throws LocalInvalidoException {
+//
+//		Form<Local> localFormRequest = LOCAL_FORM.bindFromRequest();
+//		
+//		if (LOCAL_FORM.hasErrors()) {
+//			return badRequest();
+//		} else {
+//			Local novoLocal = localFormRequest.get();
+//			Application.getDao().persist(novoLocal);
+//			Application.getDao().merge(novoLocal);
+//			Application.getDao().flush();
+//			return redirect(controllers.routes.Application.index());
+//		}
+//		
+//	}
+	
+	@Transactional
+	public static Result cadastrarLocal() {
 
 		Form<Local> localFormRequest = LOCAL_FORM.bindFromRequest();
-		
-		if (LOCAL_FORM.hasErrors()) {
-			return badRequest();
+
+		if (localFormRequest.hasErrors()) {
+			return badRequest(modalCadastroDeLocal.render(localFormRequest));
 		} else {
-			Local novoLocal = localFormRequest.get();
-			Application.getDao().persist(novoLocal);
-			Application.getDao().merge(novoLocal);
-			Application.getDao().flush();
-			return redirect(controllers.routes.Application.index());
+			Local local = localFormRequest.get();
+			
+			if (Application.getDao().findAllByClassName("Local").contains(local)) {
+				flash("success", "Local ja cadastrado");
+				return badRequest(modalCadastroDeLocal.render(localFormRequest));
+			} else {
+				Application.getDao().persist(local);
+				Application.getDao().merge(local);
+				Application.getDao().flush();
+			}
+			return redirect(routes.Application.index());
 		}
-		
 	}
 	
 	@Transactional

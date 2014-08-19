@@ -5,12 +5,15 @@ import java.util.List;
 import javax.persistence.Query;
 
 import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
 
 /**
  * Camada genérica para acesso ao Banco de Dados
  */
 public class GenericDAOImpl implements GenericDAO {
-
+	
+	
+	
 	@Override
 	public boolean persist(Object e) {
 		JPA.em().persist(e);

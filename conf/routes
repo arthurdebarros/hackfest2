@@ -21,3 +21,4 @@ GET     /eventos/tema/:id            controllers.EventoController.eventosPorTema
 POST    /eventos					 controllers.EventoController.novo()
 POST    /eventos/:id/participar		 controllers.EventoController.participar(id: Long)
 POST    /local/cadastrar			 controllers.EventoController.cadastrarLocal()
+GET		/local/cadastrar			 controllers.EventoController.getCadastradorDeLocal()
